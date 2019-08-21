@@ -1,19 +1,214 @@
 package com.zxw.leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.IntBinaryOperator;
 
 public class twoNumAdd {
     public static void main(String[] args) {
         twoNumAdd t = new twoNumAdd();
+        ListNode ll = new ListNode(1);
+        ll.next = new ListNode(3);
+        ListNode l2 = new ListNode(2);
+        l2.next = new ListNode(4);
+        ListNode listNode = t.Merge(ll, l2);
+        System.out.println(listNode);
 //     t.minNumberInRotateArray();
+    }
+
+    /**
+     * 顺时针打印矩阵
+     * @param matrix
+     * @return
+     */
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        return null;
+    }
+
+    /**
+     * 树的子结构
+     *
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public boolean HasSubtree(TreeNode root1, TreeNode root2) {
+        return true;
+    }
+
+    /**
+     * 合并两个排序的链表
+     *
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public ListNode Merge(ListNode list1, ListNode list2) {
+        ListNode listNode = null;
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        List<Integer> list = new ArrayList<>();
+        while (list1 != null && list2 != null) {
+            int val = list1.val;
+            int val1 = list2.val;
+            list.add(val);
+            list.add(val1);
+            list1 = list1.next;
+            list2 = list2.next;
+        }
+        Collections.sort(list);
+        listNode = new ListNode(list.get(0));
+        ListNode listNode1 = listNode;
+        for (int i = 1; i < list.size(); i++) {
+            listNode1.next = new ListNode(list.get(i));
+            listNode1 = listNode1.next;
+        }
+        return listNode;
+    }
+
+    private ListNode getListNode(ListNode listNode, ListNode node) {
+        if (listNode == null) {
+            listNode = node;
+        } else {
+            ListNode node1 = listNode;
+            while (node1.next != null) {
+                node1 = node1.next;
+            }
+            node1.next = node;
+        }
+        return listNode;
+    }
+
+    /**
+     * 反转链表
+     */
+    public ListNode ReverseList(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode node = head;
+        ListNode newNode = new ListNode(node.val);
+        while (node != null) {
+            // 获取原链表的下一个结点
+            ListNode next = node.next;
+            if (next != null) {
+                // 如果使用next会改变原链表的值，造成死循环
+                ListNode next2 = new ListNode(next.val);
+                next2.next = newNode;
+                newNode = next2;
+            }
+            node = node.next;
+        }
+        return newNode;
+    }
+
+    /**
+     * 链表中的第K个结点
+     *
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode FindKthToTail(ListNode head, int k) {
+        ListNode node = head;
+        int length = getLength(node);
+        while (node != null) {
+            if (length == k) {
+                return node;
+            } else {
+                node = node.next;
+                length--;
+            }
+        }
+        return node;
+    }
+
+    public int getLength(ListNode node) {
+        int i = 0;
+        while (node != null) {
+            i++;
+            node = node.next;
+        }
+        return i;
     }
 
     Stack<Integer> stack1 = new Stack<Integer>();
     Stack<Integer> stack2 = new Stack<Integer>();
+
+    /**
+     * 调整数组顺序使奇数位于偶数面前
+     *
+     * @param array
+     */
+    public void reOrderArray(int[] array) {
+        List<Integer> two = new ArrayList<>();
+        List<Integer> one = new ArrayList<>();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 == 0) {
+                two.add(array[i]);
+            } else {
+                one.add(array[i]);
+            }
+        }
+        for (int i = 0; i < one.size(); i++) {
+            array[i] = one.get(i);
+        }
+        int length = one.size() + 1;
+        for (int i = 0; i < two.size(); i++) {
+            array[length] = two.get(i);
+            length++;
+        }
+    }
+
+    /**
+     * 数值的整数次方
+     *
+     * @param base
+     * @param exponent
+     * @return
+     */
+    public double Power(double base, int exponent) {
+        long l1 = System.currentTimeMillis();
+        double count = 1;
+        if (base != 0 || exponent != 0) {
+            while (exponent > 0) {
+                count *= base;
+                exponent--;
+            }
+        }
+        long l2 = System.currentTimeMillis();
+        System.out.println(l2 - l1);
+        System.out.println(count);
+        System.out.println(Math.pow(base, exponent));
+        return count;
+    }
+
+    /**
+     * 二进制中1的个数
+     *
+     * @param n
+     * @return
+     */
+    public static int NumberOf1(int n) {
+        /*int count = 0;
+        while (n != 0) {
+            count += (n & 1);
+            n >>>= 1;
+        }
+        return count;*/
+        String s = Integer.toBinaryString(n);
+        char[] array = s.toCharArray();
+        int count = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == '1') {
+                count++;
+            }
+        }
+        return count;
+    }
 
     /**
      * 矩形覆盖
@@ -150,15 +345,19 @@ public class twoNumAdd {
     }
 
     public TreeNode reConstructBinaryTree(int[] pre, int start, int[] in, int end, int length) {
-        if (start > end)
+        if (start > end) {
             return null;
+        }
         TreeNode root = new TreeNode(pre[start]);
-        if (length == 1)
+        if (length == 1) {
             return root;
+        }
         int i = 0;
-        for (; i < length; i++)
-            if (pre[start] == in[end - i])
+        for (; i < length; i++) {
+            if (pre[start] == in[end - i]) {
                 break;
+            }
+        }
         root.left = reConstructBinaryTree(pre, start + 1, in, end - i - 1, length - 1 - i);
         root.right = reConstructBinaryTree(pre, start + length - i, in, end, i);
         return root;
@@ -209,8 +408,9 @@ public class twoNumAdd {
         int colCount = array[0].length;
         int i, j;
         for (i = rowCount - 1, j = 0; i >= 0 && j < colCount; ) {
-            if (target == array[i][j])
+            if (target == array[i][j]) {
                 return true;
+            }
             if (target < array[i][j]) {
                 i--;
                 continue;

@@ -42,7 +42,7 @@
            }
            return array[0];
    ```
-   
+
    
 
 ## 2.字符串
@@ -69,6 +69,12 @@
 ## 3.树
 
 1. 重建二叉树：输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+
+   ```
+   
+   ```
+
+2. 树的子结构：输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
 
    ```
    
@@ -127,6 +133,87 @@
        }
    ```
 
+2. 链表中倒数第K个结点:输入一个链表，输出该链表中倒数第k个结点。
+
+   ```java
+    public ListNode FindKthToTail(ListNode head, int k) {
+           ListNode node = head;
+           int length = getLength(node);
+           while (node != null) {
+               if (length == k) {
+                   return node;
+               }else{
+                   node = node.next;
+                   length--;
+               }
+           }
+           return node;
+       }
+   
+       public int getLength(ListNode node) {
+           int i = 0;
+           while (node != null) {
+               i++;
+               node = node.next;
+           }
+           return i;
+       }
+   ```
+
+3. 反转链表：输入一个链表，反转链表后，输出新链表的表头。
+
+   ```java
+    public ListNode ReverseList(ListNode head) {
+           if (head == null) {
+               return head;
+           }
+           ListNode node = head;
+           ListNode newNode = new ListNode(node.val);
+           while (node != null) {
+               // 获取原链表的下一个结点
+               ListNode next = node.next;
+               if (next != null) {
+                   // 如果使用next会改变原链表的值，造成死循环
+                   ListNode next2 = new ListNode(next.val);
+                   next2.next = newNode;
+                   newNode = next2;
+               }
+               node = node.next;
+           }
+           return newNode;
+       }
+   ```
+
+4. 合并两个排序的链表：输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+
+   ```java
+    public ListNode Merge(ListNode list1, ListNode list2) {
+           ListNode listNode = null;
+           if (list1 == null) {
+               return list2;
+           }
+           if (list2 == null) {
+               return list1;
+           }
+           List<Integer> list = new ArrayList<>();
+           while (list1 != null && list2 != null) {
+               int val = list1.val;
+               int val1 = list2.val;
+               list.add(val);
+               list.add(val1);
+               list1 = list1.next;
+               list2 = list2.next;
+           }
+           Collections.sort(list);
+           listNode = new ListNode(list.get(0));
+           ListNode listNode1 = listNode;
+           for (int i = 1; i < list.size(); i++) {
+               listNode1.next = new ListNode(list.get(i));
+               listNode1 = listNode1.next;
+           }
+           return listNode;
+       }
+   ```
 
 ## 6.递归和循环
 
@@ -210,6 +297,72 @@
                return RectCover(target - 1) + RectCover(target - 2);
            }
        }
+   ```
+
+## 7.位运算
+
+1. 二进制中1的个数：输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。
+
+   ```java
+   public static int NumberOf1(int n) {
+           /*int count = 0;
+           while (n != 0) {
+               count += (n & 1);
+               n >>>= 1;
+           }
+           return count;*/
+           String s = Integer.toBinaryString(n);
+           char[] array = s.toCharArray();
+           int count = 0;
+           for (int i = 0; i < array.length; i++) {
+               if(array[i]=='1'){
+                   count++;
+               }
+           }
+           return count;
+       }
+   ```
+
+## 8.数学运算
+
+1. 数值的整数次方：给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。保证base和exponent不同时为0
+
+   ```java
+    public double Power(double base, int exponent) {
+           return Math.pow(base,exponent);
+     }
+   ```
+
+## 9.数组
+
+1. 调整数组顺序使奇数位于偶数前面：输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+
+   ```java
+   public void reOrderArray(int[] array) {
+           List<Integer> two = new ArrayList<>();
+           List<Integer> one = new ArrayList<>();
+           for (int i = 0; i < array.length; i++) {
+               if (array[i] % 2 == 0) {
+                   two.add(array[i]);
+               } else {
+                   one.add(array[i]);
+               }
+           }
+           for (int i = 0; i < one.size(); i++) {
+               array[i] = one.get(i);
+           }
+           int length = one.size() + 1;
+           for (int i = 0; i < two.size(); i++) {
+               array[length] = two.get(i);
+               length++;
+           }
+       }
+   ```
+
+2. 顺时针打印数组：输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+
+   ```
+   
    ```
 
    
