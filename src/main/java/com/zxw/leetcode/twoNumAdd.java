@@ -1,27 +1,133 @@
 package com.zxw.leetcode;
 
+import sun.security.util.Length;
+
 import java.util.*;
 import java.util.function.IntBinaryOperator;
 
 public class twoNumAdd {
     public static void main(String[] args) {
         twoNumAdd t = new twoNumAdd();
-        ListNode ll = new ListNode(1);
-        ll.next = new ListNode(3);
-        ListNode l2 = new ListNode(2);
-        l2.next = new ListNode(4);
-        ListNode listNode = t.Merge(ll, l2);
-        System.out.println(listNode);
-//     t.minNumberInRotateArray();
+        t.IsPopOrder(new int[]{1, 2, 3, 4, 5}, new int[]{4, 5, 3, 2, 1});
+    }
+
+    /**
+     * 从上往下打印二叉树
+     *
+     * @param root
+     * @return
+     */
+    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(root.val);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        if (left != null) {
+            list.add(left.val);
+        }
+        if (right != null) {
+            list.add(right.val);
+        }
+        return list;
+    }
+
+    /**
+     * 栈的压入、弹出序列
+     */
+    public boolean IsPopOrder(int[] pushA, int[] popA) {
+        if (pushA.length == 1 && popA.length == 1) {
+            if (popA[0] == pushA[0]) {
+                return true;
+            }
+            return false;
+        }
+        int length = 0;
+        for (int i = 1; i < pushA.length - 1; i++) {
+            if (popA[i] < popA[i + 1] && popA[i] < popA[i - 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 包含min函数的栈
+     *
+     * @param node
+     */
+    Stack stack = new Stack();
+
+    public void push(int node) {
+        stack.push(node);
+    }
+
+    public void pop() {
+        stack.pop();
+    }
+
+    public int top() {
+        return (int) stack.peek();
+    }
+
+    public int min() {
+        if (stack.size() == 0) {
+            return 0;
+        }
+        int i = (Integer) stack.pop();
+        while (stack.size() != 0) {
+            Integer pop = (Integer) stack.pop();
+            if (i > pop) {
+                int temp = pop;
+                pop = i;
+                i = pop;
+            }
+        }
+        return i;
     }
 
     /**
      * 顺时针打印矩阵
+     *
      * @param matrix
      * @return
      */
-    public ArrayList<Integer> printMatrix(int [][] matrix) {
-        return null;
+    public ArrayList<Integer> printMatrix(int[][] matrix) {
+        int length = matrix.length;
+        ArrayList list = new ArrayList();
+        if (matrix == null || matrix.length == 0) {
+            return list;
+        }
+        int up = 0;
+        int down = matrix.length - 1;
+        int left = 0;
+        int right = matrix[0].length - 1;
+        while (true) {
+            for (int i = left; i <= right; i++) {
+                list.add(matrix[up][i]);
+            }
+            if (++up > down) {
+                break;
+            }
+            for (int i = up; i < down - 1; i++) {
+                list.add(matrix[i][right]);
+            }
+            if (--right < left) {
+                break;
+            }
+            for (int i = right - 1; i >= 0; i++) {
+                list.add(matrix[down][i]);
+            }
+            if (--down < up) {
+                break;
+            }
+            for (int i = down; i >= up; i--) {
+                list.add(matrix[i][left]);
+            }
+            if (++left > right) {
+                break;
+            }
+        }
+        return list;
     }
 
     /**
@@ -322,19 +428,19 @@ public class twoNumAdd {
      *
      * @param node
      */
-    public void push(int node) {
-        stack1.push(node); // 入栈：1/2/3/4/5。出栈：5/4/3/2/1
-    }
-
-    public int pop() {
-        if (stack2.size() == 0) {
-            for (int i = 0; i < stack1.size(); ) {
-                stack2.push(stack1.pop());
-            }
-        }
-        Integer pop = stack2.pop();
-        return pop;
-    }
+//    public void push(int node) {
+//        stack1.push(node); // 入栈：1/2/3/4/5。出栈：5/4/3/2/1
+//    }
+//
+//    public int pop() {
+//        if (stack2.size() == 0) {
+//            for (int i = 0; i < stack1.size(); ) {
+//                stack2.push(stack1.pop());
+//            }
+//        }
+//        Integer pop = stack2.pop();
+//        return pop;
+//    }
 
     /**
      * 重建二叉树
