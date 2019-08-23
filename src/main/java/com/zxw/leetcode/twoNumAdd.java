@@ -2,13 +2,94 @@ package com.zxw.leetcode;
 
 import sun.security.util.Length;
 
+import javax.xml.soap.Node;
 import java.util.*;
 import java.util.function.IntBinaryOperator;
 
 public class twoNumAdd {
     public static void main(String[] args) {
         twoNumAdd t = new twoNumAdd();
-        t.IsPopOrder(new int[]{1, 2, 3, 4, 5}, new int[]{4, 5, 3, 2, 1});
+        TreeNode treeNode = new TreeNode(10);
+        ArrayList<Integer> list = t.PrintFromTopToBottom(treeNode);
+        System.out.println(list);
+    }
+
+    /**
+     * 复杂链表的复制
+     *
+     * @param pHead
+     * @return
+     */
+    public RandomListNode Clone(RandomListNode pHead) {
+        if (pHead == null) {
+            return null;
+        }
+        RandomListNode root = new RandomListNode(pHead.label);
+        Queue<RandomListNode> q = new LinkedList<>();
+        q.add(pHead);
+        while (!q.isEmpty()) {
+            RandomListNode poll = q.poll();
+            if (poll != null) {
+                root.label = poll.label;
+                root.next = poll.next;
+                root.random = poll.random;
+                pHead = pHead.next;
+                root = root.next;
+            }
+        }
+        System.out.println(root);
+        return root;
+    }
+
+    public void randomClone(RandomListNode root, RandomListNode pHead) {
+        Queue<RandomListNode> q = new LinkedList<>();
+        q.add(pHead);
+        while (!q.isEmpty()) {
+            RandomListNode poll = q.poll();
+            if (poll != null) {
+                root = poll;
+                pHead = pHead.next;
+            }
+        }
+    }
+
+    /**
+     * 二叉树中和为某一值的路径
+     */
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root, int target) {
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+
+        return list;
+    }
+
+    /**
+     * 二叉搜索树的后序遍历序列
+     */
+    public boolean VerifySquenceOfBST(int[] sequence) {
+        if (sequence.length == 0) {
+            return false;
+        }
+        return IsTreeBST(sequence, 0, sequence.length - 1);
+    }
+
+    public boolean IsTreeBST(int[] sequence, int start, int end) {
+        if (end <= start) {
+            return true;
+        }
+        int i = start;
+        for (; i < end; i++) {
+            if (sequence[i] > sequence[end]) {
+                break;
+            }
+            ;
+        }
+        for (int j = i; j < end; j++) {
+            if (sequence[j] < sequence[end]) {
+                return false;
+            }
+            ;
+        }
+        return IsTreeBST(sequence, start, i - 1) && IsTreeBST(sequence, i, end - 1);
     }
 
     /**
@@ -19,14 +100,22 @@ public class twoNumAdd {
      */
     public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
         ArrayList<Integer> list = new ArrayList<>();
-        list.add(root.val);
-        TreeNode left = root.left;
-        TreeNode right = root.right;
-        if (left != null) {
-            list.add(left.val);
+        if (root == null) {
+            return list;
         }
-        if (right != null) {
-            list.add(right.val);
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            // 结点出队
+            TreeNode poll = q.poll();
+            // 处理当前结点
+            list.add(poll.val);
+            if (poll.left != null) {
+                q.add(poll.left);
+            }
+            if (poll.right != null) {
+                q.add(poll.right);
+            }
         }
         return list;
     }

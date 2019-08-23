@@ -80,13 +80,51 @@
    
    ```
 
+3. 从上到下打印二叉树
+
+   ```java
+    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+           ArrayList<Integer> list = new ArrayList<>();
+           if (root == null) {
+               return list;
+           }
+           Queue<TreeNode> q = new LinkedList<>();
+           q.add(root);
+           while (!q.isEmpty()) {
+               // 结点出队
+               TreeNode poll = q.poll();
+               // 处理当前结点
+               list.add(poll.val);
+               if (poll.left != null) {
+                   q.add(poll.left);
+               }
+               if (poll.right != null) {
+                   q.add(poll.right);
+               }
+           }
+           return list;
+       }
+   ```
+
+4. 二叉搜索树的后序遍历序列：输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+
+   ```
+   
+   ```
+
+5. 二叉树中和为某一值得路径：输入一颗二叉树的根节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。(注意: 在返回值的list中，数组长度大的数组靠前)
+
+   ```
+   
+   ```
+
    
 
 ## 4.栈和队列
 
 1. 用两个栈实现队列：用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。
 
-2. ```java
+   ```java
    Stack<Integer> stack1 = new Stack<Integer>();
        Stack<Integer> stack2 = new Stack<Integer>();
    
@@ -102,6 +140,59 @@
            }
            Integer pop = stack2.pop();
            return pop;
+       }
+   ```
+
+2. 包含min函数的栈：定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。
+
+   ```java
+    Stack<Integer> stackTotal = new Stack<Integer>();
+       Stack<Integer> stackLittle = new Stack<Integer>();
+   
+       public void push(int node) {
+           stackTotal.push(node);
+           if(stackLittle.empty()){
+               stackLittle.push(node);
+           }else{
+               if(node <= stackLittle.peek()){
+                   stackLittle.push(node);
+               }else{
+                   stackLittle.push(stackLittle.peek());
+               }
+           }
+       }
+   
+       public void pop() {
+           stackTotal.pop();
+           stackLittle.pop();
+       }
+   
+       public int top() {
+           return stackTotal.peek();
+       }
+   
+       public int min() {
+           return stackLittle.peek();
+       }
+   ```
+
+3. 栈的压入、弹出序列：输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+
+   ```java
+   	public boolean IsPopOrder(int[] pushA, int[] popA) {
+           if (pushA.length == 1 && popA.length == 1) {
+               if (popA[0] == pushA[0]) {
+                   return true;
+               }
+               return false;
+           }
+           int length = 0;
+           for (int i = 1; i < pushA.length - 1; i++) {
+               if (popA[i] < popA[i + 1] && popA[i] < popA[i - 1]) {
+                   return false;
+               }
+           }
+           return true;
        }
    ```
 
@@ -361,8 +452,45 @@
 
 2. 顺时针打印数组：输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
 
-   ```
-   
+   ```java
+    public ArrayList<Integer> printMatrix(int[][] matrix) {
+           int length = matrix.length;
+        ArrayList list = new ArrayList();
+           if (matrix == null || matrix.length == 0) {
+               return list;
+           }
+           int up = 0;
+           int down = matrix.length - 1;
+           int left = 0;
+           int right = matrix[0].length - 1;
+           while (true) {
+               for (int i = left; i <= right; i++) {
+                   list.add(matrix[up][i]);
+               }
+               if (++up > down) {
+                   break;
+               }
+               for (int i = up; i < down - 1; i++) {
+                   list.add(matrix[i][right]);
+               }
+               if (--right < left) {
+                   break;
+               }
+               for (int i = right - 1; i >= 0; i++) {
+                   list.add(matrix[down][i]);
+               }
+               if (--down < up) {
+                   break;
+               }
+               for (int i = down; i >= up; i--) {
+                   list.add(matrix[i][left]);
+               }
+               if (++left > right) {
+                   break;
+               }
+           }
+           return list;
+       }
    ```
 
    
