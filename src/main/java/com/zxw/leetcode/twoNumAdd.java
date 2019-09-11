@@ -9,9 +9,171 @@ import java.util.function.IntBinaryOperator;
 public class twoNumAdd {
     public static void main(String[] args) {
         twoNumAdd t = new twoNumAdd();
-        TreeNode treeNode = new TreeNode(10);
-        ArrayList<Integer> list = t.PrintFromTopToBottom(treeNode);
-        System.out.println(list);
+//        TreeNode treeNode = new TreeNode(10);
+//        ArrayList<Integer> list = t.PrintFromTopToBottom(treeNode);
+//        System.out.println(list);
+//        t.Permutation("abc");
+//        String abcdefg = t.LeftRotateString("abcdefg", 3);
+//        System.out.println(abcdefg);
+//        int abccccdd = t.longestPalindrome("abcccc");
+//        System.out.println(abccccdd);
+        String s= "1234";
+        String s1 ="A";
+        long b = 0;
+        int a = 129;
+        System.out.println(Integer.toBinaryString(  60));
+        System.out.println(Integer.toBinaryString(13));
+        System.out.println((60&13));
+        System.out.println(3>>2);
+    }
+
+    /**
+     * 最长回文串
+     *
+     * @param s
+     * @return
+     */
+    public int longestPalindrome(String s) {
+        HashSet<Character> hs = new HashSet<>();
+        int length = s.length();
+        int count = 0;
+        if (length == 0) {
+            return 0;
+        }
+        for (int i = 0; i < length; i++) {
+            if (hs.contains(s.charAt(i))) {
+                hs.remove(s.charAt(i));
+                count++;
+            } else {
+                hs.add(s.charAt(i));
+            }
+        }
+        return hs.isEmpty() ? count * 2 : count * 2 + 1;
+    }
+
+    public String longestCommonPrefix(String[] strs) {
+        for (int i = 0; i < strs.length; i++) {
+
+        }
+        return "";
+    }
+
+    /**
+     * 表示数值的字符串
+     */
+    public boolean isNumeric(char[] str) {
+        return false;
+    }
+
+    /**
+     * 把字符串转成整数
+     */
+    public int StrToInt(String str) {
+        char[] array = str.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        int len = 0;
+        if (str.length() == 0) {
+            return 0;
+        }
+        if (str.length() == 1 && (str.charAt(0) == '+' || str.charAt(0) == '-')) {
+            return 0;
+        }
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
+            if (array[i] > 48 && array[i] <= 64) {
+                sb.append(array[i] - '0');
+            } else {
+                if (array[i] >= 65 && array[i] < 113) {
+                    return 0;
+                } else if (array[i] == '-') {
+                    sb.append(array[i]);
+                }
+            }
+        }
+        return Integer.valueOf(sb.toString());
+    }
+
+    /**
+     * 左旋转字符串
+     */
+    public String LeftRotateString(String str, int n) {
+        StringBuffer sb = new StringBuffer();
+        char[] array = str.toCharArray();
+        char[] arr = new char[array.length];
+        if (array.length < n) {
+            throw new RuntimeException();
+        }
+        for (int i = 0; i < n; i++) {
+            arr[i] = array[i];
+        }
+        for (int i = n; i < array.length; i++) {
+            sb.append(array[i]);
+        }
+        for (int i = 0; i < arr.length; i++) {
+            sb.append(arr[i]);
+        }
+        String s = sb.toString();
+        int length = str.length();
+        str += str;
+        System.out.println(str);
+        System.out.println(str.substring(n, length + n));
+        return s;
+    }
+
+    /**
+     * 字符串的排列
+     *
+     * @param str
+     * @return
+     */
+    public ArrayList<String> Permutation(String str) {
+        ArrayList list = new ArrayList();
+        if (str != null && str.length() > 0) {
+            PermutationHelper(str.toCharArray(), 0, list);
+            Collections.sort(list);
+        }
+        return list;
+    }
+
+    public boolean is_swap(char[] chars, int beign, int k) {
+        boolean flag = true;
+        for (int i = beign; i < k; i++) {
+            if (chars[i] == chars[k]) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    private void PermutationHelper(char[] chars, int i, ArrayList<String> list) {
+        if (i == chars.length - 1) {
+            list.add(String.valueOf(chars));
+        } else {
+            for (int j = i; j < chars.length; j++) {
+                if (is_swap(chars, i, j)) {
+                    swap(chars, i, j);
+                    PermutationHelper(chars, i + 1, list);
+                    swap(chars, i, j);
+                }
+            }
+        }
+    }
+
+    private void swap(char[] cs, int i, int j) {
+        char temp = cs[i];
+        cs[i] = cs[j];
+        cs[j] = temp;
+    }
+
+    /**
+     * 二叉搜索树与双向链表
+     *
+     * @param pRootOfTree
+     * @return
+     */
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        return null;
     }
 
     /**
